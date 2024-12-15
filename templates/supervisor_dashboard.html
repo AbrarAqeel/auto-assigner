@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supervisor Dashboard</title>
+
+    <!--    <script src="/static/js/supervisor_dashboard.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="/static/css/supervisor_dashboard.css">
+</head>
+<body>
+<div class="dashboard">
+
+    <h1>Manage Agents</h1>
+
+    <nav>
+        <ul>
+            <li><a href="/">Return to Home</a></li>
+        </ul>
+
+    </nav>
+
+    <h2>Add New Agent</h2>
+
+    <form id="add-agent-form" action="/supervisor-dashboard" method="POST">
+        <div class="form-row"></div>
+
+        <div>
+            <label for="Agent_Name">Name:</label>
+            <input type="text" id="Agent_Name" name="Agent_Name" required>
+        </div>
+
+        <div>
+            <label for="Agent_Priority">Priority:</label>
+            <input type="number" id="Agent_Priority" name="Agent_Priority" required min="0.01" max="0.99" step="0.01">
+        </div>
+
+        <div>
+            <label for="Agent_Workload">Workload:</label>
+            <input type="number" id="Agent_Workload" name="Agent_Workload" required min="1" step="1">
+
+            <button class="submit" type="submit">Add Agent</button>
+        </div>
+
+    </form>
+
+    <h2>Current Agents</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Priority</th>
+            <th>Workload</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for agent in agents %}
+        <tr id="agent-{{ agent.Agent_ID }}">
+            <td>{{ agent.Agent_ID }}</td>
+            <td>{{ agent.Agent_Name }}</td>
+            <td>{{ agent.Agent_Priority }}</td>
+            <td>{{ agent.Agent_Workload }}</td>
+            <td id="status-{{ agent.Agent_ID }}">{{ agent.Agent_Status }}</td>
+            <td>
+                <div class="agent-row">
+                    <div class="agent-actions">
+
+                        <form class="update-priority-form" data-agent-id="{{ agent.Agent_ID }}" style="display:contents;">
+
+                            <input type="hidden" name="agent_id" value="{{ agent.Agent_ID }}">
+
+                            <label>Update Priority</label>
+                            <input type="number" name="agent_priority" required min="0.01" max="0.99" step="0.01">
+                            <button type="submit">Update</button>
+
+                        </form>
+
+                        <form class="update-workload-form" data-agent-id="{{ agent.Agent_ID }}" style="display:contents;">
+
+                            <input type="hidden" name="agent_id" value="{{ agent.Agent_ID }}">
+
+                            <label>Update Workload</label>
+                            <input type="number" name="agent_workload" required min="1" step="1">
+                            <button type="submit">Update</button>
+
+                        </form>
+
+                        <form class="delete-agent" data-agent-id="{{ agent.Agent_ID }}" style="display:contents;">
+
+                            <button class="delete" data-id="{{ agent.Agent_ID }}">Remove Agent</button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Forms</h2>
+
+    <!--    <button id="assign-forms-button">Assign Forms</button>-->
+
+    <h1></h1>
+
+    <table id="forms-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Detail</th>
+            <th>Status</th>
+            <th>Assigned Agent</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for form in forms %}
+        <tr id="form-{{ form.Form_ID }}">
+            <td>{{ form.Form_ID }}</td>
+            <td>{{ form.Form_Type }}</td>
+            <td>{{ form.Form_Detail }}</td>
+            <td id="status-{{ form.Form_ID }}">{{ form.Form_Status }}</td>
+            <td id="agent-{{ form.Form_ID }}">{{ form.Assigned_Agent_Name }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p id="response-message"></p>
+</div>
+<script>
+    <!--If you want to add button to assign forms, use this-->
+
+    <!--document.getElementById('assign-forms-button').addEventListener('click', function() {-->
+    <!--    fetch('/assign_forms', { method: 'POST' })-->
+    <!--        .then(response => response.json())-->
+    <!--        .then(data => {-->
+    <!--            if (data.message) {-->
+    <!--                document.getElementById('response-message').textContent = data.message;-->
+    <!--                document.getElementById('response-message').style.color = 'green';-->
+    <!--                updateAgentStatuses();-->
+    <!--            } else if (data.error) {-->
+    <!--                document.getElementById('response-message').textContent = data.error;-->
+    <!--                document.getElementById('response-message').style.color = 'red';-->
+    <!--            }-->
+    <!--        })-->
+    <!--        .catch(error => {-->
+    <!--            console.error('Error:', error);-->
+    <!--            document.getElementById('response-message').textContent = 'An error occurred while assigning forms.';-->
+    <!--            document.getElementById('response-message').style.color = 'red';-->
+    <!--        });-->
+    <!--});-->
+
+    function assignForms() {
+        fetch('/assign_forms', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    document.getElementById('response-message').textContent = data.message;
+                    document.getElementById('response-message').style.color = 'green';
+                    updateAgentStatuses(); // This function updates agent statuses on the front end
+                } else if (data.error) {
+                    document.getElementById('response-message').textContent = data.error;
+                    document.getElementById('response-message').style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response-message').textContent = 'An error occurred while assigning forms.';
+                document.getElementById('response-message').style.color = 'red';
+            });
+    }
+
+    // Run the assignForms function every 10 seconds (10000 milliseconds)
+    setInterval(assignForms, 2000);
+
+
+    document.querySelectorAll('.delete-agent').forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent the form from submitting the traditional way
+
+            const agentId = this.getAttribute('data-agent-id');
+            console.log('Deleting agent with ID:', agentId); // Debugging
+
+            fetch('/delete_agent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'agent_id': agentId,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    document.getElementById('agent-' + agentId).remove(); // Ensure this element exists
+                    document.getElementById('response-message').textContent = data.message;
+                    document.getElementById('response-message').style.color = 'green';
+                } else if (data.error) {
+                    document.getElementById('response-message').textContent = data.error;
+                    document.getElementById('response-message').style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response-message').textContent = 'An error occurred while deleting the agent.';
+                document.getElementById('response-message').style.color = 'red';
+            });
+        });
+    });
+
+    document.querySelectorAll('.update-priority-form').forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const agentId = this.getAttribute('data-agent-id');
+            const priority = this.querySelector('input[name="agent_priority"]').value;
+
+            fetch('/update_agent_priority', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'agent_id': agentId,
+                    'agent_priority': priority,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    document.querySelector(`#agent-${agentId} td:nth-child(3)`).textContent = priority;
+                    document.getElementById('response-message').textContent = data.message;
+                    document.getElementById('response-message').style.color = 'green';
+                } else if (data.error) {
+                    document.getElementById('response-message').textContent = data.error;
+                    document.getElementById('response-message').style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response-message').textContent = 'An error occurred while updating agent priority.';
+                document.getElementById('response-message').style.color = 'red';
+            });
+        });
+    });
+
+    document.querySelectorAll('.update-workload-form').forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const agentId = this.getAttribute('data-agent-id');
+            const workLoad = this.querySelector('input[name="agent_workload"]').value;
+
+            fetch('/update_agent_workload', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'agent_id': agentId,
+                    'agent_workload': workLoad,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    document.querySelector(`#agent-${agentId} td:nth-child(4)`).textContent = workLoad;
+                    document.getElementById('response-message').textContent = data.message;
+                    document.getElementById('response-message').style.color = 'green';
+                } else if (data.error) {
+                    document.getElementById('response-message').textContent = data.error;
+                    document.getElementById('response-message').style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response-message').textContent = 'An error occurred while updating agent queue length.';
+                document.getElementById('response-message').style.color = 'red';
+            });
+        });
+    });
+
+    function updateAgentStatuses() {
+        fetch('/agents_status')
+            .then(response => response.json())
+            .then(data => {
+                data.agents.forEach(agent => {
+                    const statusCell = document.getElementById('status-' + agent.Agent_ID);
+                    if (statusCell) {
+                        statusCell.textContent = agent.Agent_Status;
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response-message').textContent = 'An error occurred while fetching agent statuses.';
+                document.getElementById('response-message').style.color = 'red';
+            });
+    }
+
+    function updateFormStatuses() {
+        fetch('/form_status')
+            .then(response => response.json())
+            .then(data => {
+                data.forms.forEach(form => {
+                    const statusCell = document.getElementById('status-' + form.Form_ID);
+                    if (statusCell) {
+                        statusCell.textContent = form.Form_Status;
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response-message').textContent = 'An error occurred while fetching form statuses.';
+                document.getElementById('response-message').style.color = 'red';
+            });
+    }
+
+
+
+    function fetchForms() {
+        fetch('/forms')
+            .then(response => response.json())
+            .then(forms => {
+                const tbody = document.getElementById('forms-table').querySelector('tbody');
+                tbody.innerHTML = ''; // Clear existing table rows
+                forms.forEach(form => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${form.Form_ID}</td>
+                        <td>${form.Form_Type}</td>
+                        <td>${form.Form_Detail}</td>
+                        <td>${form.Form_Status}</td>
+                        <td>${form.Assigned_Agent_ID}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response-message').textContent = 'An error occurred while fetching forms.';
+                document.getElementById('response-message').style.color = 'red';
+            });
+    }
+
+    // Call fetchForms when the page loads
+    document.addEventListener('DOMContentLoaded', fetchForms);
+</script>
+</body>
+</html>
+
+
+
+
+

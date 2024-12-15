@@ -1,0 +1,112 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+
+<!--    <link rel="stylesheet" href="/static/css/agent_dashboard.css">-->
+<!--    <script src="/static/js/agent_dashboard.js"></script>-->
+
+<!--    <title>Agent Dashboard</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="container">-->
+<!--    <h1>Agent Dashboard</h1>-->
+
+<!--    <div class="agent-info">-->
+<!--        <p><strong>Agent ID:</strong> <span id="agent_id">123</span></p>-->
+<!--        <p><strong>Agent Name:</strong> <span id="agent_name">John Doe</span></p>-->
+<!--    </div>-->
+
+<!--    <div class="status-select">-->
+<!--        <label for="agent_status">Agent Status:</label>-->
+<!--        <select id="agent_status">-->
+<!--            <option value="Available">Available</option>-->
+<!--            <option value="Break">Break</option>-->
+<!--            <option value="Offline">Offline</option>-->
+<!--        </select>-->
+<!--        <button onclick="updateStatus()">Update Status</button>-->
+<!--    </div>-->
+
+<!--    <div class="form-details">-->
+<!--        <h3>Form Details</h3>-->
+<!--        <p><strong>Form ID:</strong> <span id="form_id">001</span></p>-->
+<!--        <p><strong>Form Type:</strong> <span id="form_type">Type A</span></p>-->
+<!--        <p><strong>Form Description:</strong> <span id="form_detail">Description of the form goes here.</span></p>-->
+<!--    </div>-->
+
+<!--    <div class="workload">-->
+<!--        <p><strong>Pending Forms in Queue:</strong> <span id="workload">5</span></p>-->
+<!--    </div>-->
+
+<!--    <div class="form-button">-->
+<!--        <input type="checkbox" id="confirmCheckbox">-->
+<!--        <label for="confirmCheckbox">I confirm that I want to submit this form</label>-->
+<!--        <button onclick="confirmFormSubmission()">Complete Form</button>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/static/css/agent_dashboard.css">
+    <script src="/static/js/agent_dashboard.js"></script>
+
+    <title>Agent Dashboard</title>
+</head>
+<body>
+
+<div class="container">
+    <h1>Agent Dashboard</h1>
+
+    <div class="agent-info">
+        <p><strong>Agent ID:</strong> <span id="agent_id">123</span></p>
+        <p><strong>Agent Name:</strong> <span id="agent_name">John Doe</span></p>
+    </div>
+
+    <div class="status-select">
+        <label for="agent_status">Agent Status:</label>
+        <select id="agent_status" onchange="updateStatus()">
+            <option value="Available">Available</option>
+            <option value="Break">Break</option>
+            <option value="Offline">Offline</option>
+            <option value="Working">Working</option>
+        </select>
+    </div>
+
+    <div class="form-details">
+        <h3>Form Details</h3>
+        <p><strong>Form ID:</strong> <span id="form_id">001</span></p>
+        <p><strong>Form Type:</strong> <span id="form_type">Type A</span></p>
+        <p><strong>Form Description:</strong> <span id="form_detail">Description of the form goes here.</span></p>
+    </div>
+
+    <div class="workload">
+        <p><strong>Pending Forms in Queue:</strong> <span id="workload">5</span></p>
+    </div>
+
+    <div class="form-button">
+        <input type="checkbox" id="confirmCheckbox">
+        <label for="confirmCheckbox">I confirm that I want to submit this form</label>
+        <button onclick="confirmFormSubmission()">Complete Form</button>
+    </div>
+</div>
+
+<script>
+    // Load the agent data and form data when the page is loaded
+    window.onload = function() {
+        loadAgentData();
+        loadFormData();
+    }
+</script>
+
+</body>
+</html>

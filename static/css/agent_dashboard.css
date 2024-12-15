@@ -1,0 +1,46 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    width: 70%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    text-align: center;
+    color: #333;
+}
+.status-select, .form-button, .workload, .form-details {
+    margin: 10px 0;
+}
+label {
+    font-weight: bold;
+    margin-right: 4px;
+}
+select, button {
+    padding: 7px;
+    font-size: 14px;
+}
+button {
+    background-color: #6c5ce7;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #5942c3;
+}
+.form-button button {
+    margin-top: 10px;
+}
+.agent-info, .form-details, .workload {
+    margin-bottom: 20px;
+}
+.form-button input {
+    margin-right: 5px;
+}

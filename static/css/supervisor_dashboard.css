@@ -1,0 +1,193 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
+.dashboard {
+    width: 100%;
+    max-width: 1200px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1, h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+nav {
+    background-color: #6c5ce7;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav li {
+    margin-right: 10px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    font-size: 14px;
+}
+
+nav a:hover {
+    color: #ddd;
+}
+
+form {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-row {
+    display: contents;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-row > * {
+    flex: 1;
+}
+
+input[type="text"], input[type="number"], select, textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+button[class="delete"], .delete-agent {
+    background-color: #BF0000;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+button[type="submit"], #assign-forms-button {
+    background-color: #00A10D;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+
+button[type="submit"]:hover, #assign-forms-button:hover {
+    background-color: #49be53;
+}
+
+button[class="delete"]:hover, .delete-agent:hover {
+    background-color: #ff0000;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+th {
+    background-color: #6c5ce7;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Specific layout for current agents rows */
+.agent-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.agent-row .agent-actions {
+    display: contents;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+#response-message {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #6c5ce7;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+    }
+
+    button[type="submit"], .delete-agent {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    table, th, td {
+        font-size: 12px;
+    }
+
+    /* Adjust flex directions for smaller screens */
+    .form-row {
+        flex-direction: column;
+    }
+
+    .agent-row .agent-actions {
+        flex-direction: column;
+    }
+}
+

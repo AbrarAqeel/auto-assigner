@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/css/customer_dashboard.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="/static/js/customer_dashboard.js"></script>
+        <title>Customer Dashboard</title>
+    </head>
+    <body>
+        <div class="dashboard">
+
+            <h1>Customer Dashboard</h1>
+
+            <nav>
+                <ul>
+                    <li><a href="/">Return to Home</a></li>
+                </ul>
+            </nav>
+
+            <h2>Form Submission</h2>
+
+            <form id="form-submission" method="POST">
+                <label for="Form_Type">Form Type:</label>
+                <input type="text" id="Form_Type" name="Form_Type" required><br>
+
+                <label for="Form_Detail">Form Detail:</label>
+                <textarea id="Form_Detail" name="Form_Detail" required></textarea><br>
+
+                <button type="submit">Submit Form</button>
+            </form>
+
+            <p id="response-message"></p> <!-- To display success/error message -->
+
+        </div>
+    </body>
+</html>
